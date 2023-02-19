@@ -1,34 +1,98 @@
 /**
- * Some predefined delay values (in milliseconds).
+ * Strategy Pattern
  */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
+
+interface DuckQuackable {
+  quack();
 }
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium,
-): Promise<string> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay),
-  );
+interface DuckFlyable {
+  fly();
 }
 
-// Please see the comment in the .eslintrc.json file about the suppressed rule!
-// Below is an example of how to use ESLint errors suppression. You can read more
-// at https://eslint.org/docs/latest/user-guide/configuring/rules#disabling-rules
-
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function greeter(name: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  // The name parameter should be of type string. Any is used only to trigger the rule.
-  return await delayedHello(name, Delays.Long);
+interface DuckDisplayable   {
+  display();
 }
+
+interface Duckable extends DuckQuackable, DuckFlyable, DuckDisplayable {}
+
+
+class DuckSimpleQuack implements DuckQuackable {
+  quack() {
+    console.log(DuckSimpleQuack.name)
+  }
+}
+
+class DuckSimpleFly implements DuckFlyable {
+  fly() {
+    console.log(DuckSimpleFly.name)
+  }
+
+}
+
+class DuckSimpleDisplay implements DuckDisplayable {
+  display() {
+    console.log(DuckSimpleDisplay.name)
+  }
+}
+
+class DuckStrangeQuack implements DuckQuackable {
+  quack() {
+    console.log(DuckStrangeQuack.name)
+  }
+}
+
+class DuckStrangeFly implements DuckFlyable {
+  fly() {
+    console.log(DuckStrangeFly.name)
+  }
+}
+
+class DuckStrangeDisplay implements DuckDisplayable {
+  display() {
+    console.log(DuckStrangeDisplay.name)
+  }
+}
+
+class Duck implements Duckable {
+  constructor(
+    quackable: DuckQuackable,
+    flyable: DuckFlyable,
+    displayable: DuckDisplayable
+  ) {
+    this.#displayable = displayable;
+    this.#flyable = flyable;
+    this.#quackable = quackable
+  }
+  quack() {
+    this.#quackable.quack()
+  }
+  fly() {
+    this.#flyable.fly()
+  }
+  display() {
+    this.#displayable.display()
+  }
+
+
+  #quackable: DuckQuackable;
+  #flyable: DuckFlyable;
+  #displayable: DuckDisplayable;
+}
+
+
+
+function duck(duck: Duckable) {
+  console.log(duck)
+  duck.display()
+  duck.quack()
+  duck.fly()
+}
+
+
+
+
+
+duck(new Duck(new DuckSimpleQuack, new DuckSimpleFly, new DuckSimpleDisplay))
+duck(new Duck(new DuckStrangeQuack, new DuckStrangeFly, new DuckStrangeDisplay))
+duck(new Duck(new DuckSimpleQuack, new DuckStrangeFly, new DuckStrangeDisplay))
