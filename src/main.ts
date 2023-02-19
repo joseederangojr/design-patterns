@@ -60,30 +60,29 @@ class Duck implements Duckable {
     flyable: DuckFlyable,
     displayable: DuckDisplayable
   ) {
-    this.#displayable = displayable;
-    this.#flyable = flyable;
-    this.#quackable = quackable
+    this.displayable = displayable;
+    this.flyable = flyable;
+    this.quackable = quackable
   }
   quack() {
-    this.#quackable.quack()
+    this.quackable.quack()
   }
   fly() {
-    this.#flyable.fly()
+    this.flyable.fly()
   }
   display() {
-    this.#displayable.display()
+    this.displayable.display()
   }
 
 
-  #quackable: DuckQuackable;
-  #flyable: DuckFlyable;
-  #displayable: DuckDisplayable;
+  private quackable: DuckQuackable;
+  private flyable: DuckFlyable;
+  private displayable: DuckDisplayable;
 }
 
 
 
 function duck(duck: Duckable) {
-  console.log(duck)
   duck.display()
   duck.quack()
   duck.fly()
